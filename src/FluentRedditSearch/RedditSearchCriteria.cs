@@ -41,13 +41,13 @@ namespace FluentRedditSearch
 
         public RedditSearchCriteria WithAuthors(params string[] authors)
         {
-            WithQueryProperty("author", authors);
+            WithQueryProperty("author", authors, false);
             return this;
         }
 
         public RedditSearchCriteria WithFlairs(params string[] flairs)
         {
-            WithQueryProperty("flair", flairs);
+            WithQueryProperty("flair", flairs, true);
             return this;
         }
 
@@ -70,12 +70,12 @@ namespace FluentRedditSearch
 
         public RedditSearchCriteria WithSites(params string[] sites)
         {
-            return WithQueryProperty("site", sites);
+            return WithQueryProperty("site", sites, false);
         }
 
         public RedditSearchCriteria WithSubreddits(params string[] subreddits)
         {
-            return WithQueryProperty("subreddit", subreddits);
+            return WithQueryProperty("subreddit", subreddits, false);
         }
 
         public RedditSearchCriteria WithTerm(string searchTerm)
@@ -109,10 +109,16 @@ namespace FluentRedditSearch
             return WithApiProperty("include_over_18", includeOver18 ? "on" : "off");
         }
 
-        private RedditSearchCriteria WithQueryProperty(string property, string[] values)
+        private RedditSearchCriteria WithQueryProperty(string property, string[] values, bool allowSpaces)
         {
             if (values?.Any() != true)
                 throw new ArgumentException("Values must be populated");
+
+            if (values.Any(string.IsNullOrWhiteSpace))
+                throw new ArgumentException("All values must be populated");
+
+            if (!allowSpaces && values.Any(x => x.Contains(" ")))
+                throw new ArgumentException("Values cannot contain a space");
 
             _queryProperties[property] = values;
             return this;
