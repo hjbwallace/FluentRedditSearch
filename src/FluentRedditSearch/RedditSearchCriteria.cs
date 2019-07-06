@@ -19,7 +19,6 @@ namespace FluentRedditSearch
 
         public RedditSearchCriteria()
         {
-            WithLimit(100);
         }
 
         public string Build()
