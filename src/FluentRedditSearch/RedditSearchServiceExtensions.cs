@@ -8,5 +8,16 @@ namespace FluentRedditSearch
         {
             return await client.GetPayload(criteria.Build());
         }
+
+        public static async Task<RedditSearchResult[]> GetResults(this IRedditSearchService client, RedditSearchCriteria criteria)
+        {
+            return await client.GetResults(criteria.Build());
+        }
+
+        public static async Task<RedditSearchResult[]> GetResults(this IRedditSearchService client, string queryString)
+        {
+            var payload = await client.GetPayload(queryString);
+            return SearchResponseParser.Parse(payload);
+        }
     }
 }
