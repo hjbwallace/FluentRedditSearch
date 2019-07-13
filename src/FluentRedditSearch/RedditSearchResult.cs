@@ -8,7 +8,7 @@ namespace FluentRedditSearch
         public string Author { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Domain { get; set; }
-        public string Flair { get; set; }        
+        public string Flair { get; set; }
         public bool IsSelfPost { get; set; }
         public bool IsVideo { get; set; }
         public bool IsSpoiler { get; set; }
@@ -17,7 +17,7 @@ namespace FluentRedditSearch
         public int Score { get; set; }
         public string SelfText { get; set; }
         public string Subreddit { get; set; }
-        public string Thumbnail { get; set; }
+        public Uri Thumbnail { get; set; }
         public string Title { get; set; }
         public Uri Url { get; set; }
     }

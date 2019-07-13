@@ -23,12 +23,12 @@ namespace FluentRedditSearch
             return new RedditSearchResult
             {
                 Id = data.Id,
-                Title = data.Title,
-                SelfText = data.SelfText,
+                Title = FormatText(data.Title),
+                SelfText = FormatText(data.SelfText),
                 Url = data.Url,
-                Domain = data.Domain,
+                Domain = FormatText(data.Domain),
                 Score = data.Score,
-                Flair = data.LinkFlairText,
+                Flair = FormatText(data.LinkFlairText),
                 CreatedAt = UnixTimeStampToDateTime(data.Created),
                 Author = data.Author,
                 Subreddit = data.Subreddit,
@@ -41,7 +41,12 @@ namespace FluentRedditSearch
             };
         }
 
-        private static string GetThumbnailFromPreview(ChildData data)
+        private static string FormatText(string source)
+        {
+            return string.IsNullOrWhiteSpace(source) ? null : source.Trim();
+        }
+
+        private static Uri GetThumbnailFromPreview(ChildData data)
         {
             var absoluteUri = data?.Preview?
                 .Images
@@ -55,7 +60,8 @@ namespace FluentRedditSearch
             if (absoluteUri == null)
                 return null;
 
-            return HttpUtility.HtmlDecode(absoluteUri);
+            var decoded = HttpUtility.HtmlDecode(absoluteUri);
+            return new Uri(decoded);
         }
 
         private static DateTime UnixTimeStampToDateTime(double unixTimeStamp)

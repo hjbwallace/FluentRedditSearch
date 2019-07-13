@@ -8,13 +8,14 @@ namespace FluentRedditSearch
     {
         public async Task<string> GetPayload(string queryString)
         {
-            var client = new HttpClient { BaseAddress = new Uri("https://www.reddit.com/") };
+            using (var client = new HttpClient { BaseAddress = new Uri("https://www.reddit.com/") })
+            {
+                var response = await client.GetAsync(queryString);
 
-            var response = await client.GetAsync(queryString);
+                response.EnsureSuccessStatusCode();
 
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync();
+            }
         }
     }
 }
