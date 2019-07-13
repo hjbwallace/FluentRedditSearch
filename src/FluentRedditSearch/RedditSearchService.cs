@@ -6,7 +6,7 @@ namespace FluentRedditSearch
 {
     public class RedditSearchService : IRedditSearchService
     {
-        public async Task<string> GetPayload(string queryString)
+        public async Task<string> GetPayloadAsync(string queryString)
         {
             using (var client = new HttpClient { BaseAddress = new Uri("https://www.reddit.com/") })
             {

@@ -4,20 +4,40 @@ namespace FluentRedditSearch
 {
     public static class RedditSearchServiceExtensions
     {
-        public static async Task<string> GetPayload(this IRedditSearchService client, RedditSearchCriteria criteria)
+        public static async Task<string> GetPayloadAsync(this IRedditSearchService service, RedditSearchCriteria criteria)
         {
-            return await client.GetPayload(criteria.Build());
+            return await service.GetPayloadAsync(criteria.Build());
         }
 
-        public static async Task<RedditSearchResult[]> GetResults(this IRedditSearchService client, RedditSearchCriteria criteria)
+        public static string GetPayload(this IRedditSearchService service, string queryString)
         {
-            return await client.GetResults(criteria.Build());
+            return service.GetPayloadAsync(queryString).Result;
         }
 
-        public static async Task<RedditSearchResult[]> GetResults(this IRedditSearchService client, string queryString)
+        public static string GetPayload(this IRedditSearchService service, RedditSearchCriteria criteria)
         {
-            var payload = await client.GetPayload(queryString);
+            return service.GetPayloadAsync(criteria).Result;
+        }
+
+        public static async Task<RedditSearchResult[]> GetResultsAsync(this IRedditSearchService service, RedditSearchCriteria criteria)
+        {
+            return await service.GetResultsAsync(criteria.Build());
+        }
+
+        public static async Task<RedditSearchResult[]> GetResultsAsync(this IRedditSearchService service, string queryString)
+        {
+            var payload = await service.GetPayloadAsync(queryString);
             return SearchResponseParser.Parse(payload);
+        }
+
+        public static RedditSearchResult[] GetResults(this IRedditSearchService service, RedditSearchCriteria criteria)
+        {
+            return service.GetResultsAsync(criteria).Result;
+        }
+
+        public static RedditSearchResult[] GetResults(this IRedditSearchService service, string queryString)
+        {
+            return service.GetResultsAsync(queryString).Result;
         }
     }
 }
