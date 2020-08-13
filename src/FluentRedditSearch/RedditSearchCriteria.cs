@@ -29,7 +29,9 @@ namespace FluentRedditSearch
             {
                 sb.Append(" ");
                 sb.Append(queryProperty.Key + "%3A");
+                sb.Append("(");
                 sb.Append(string.Join(" OR ", queryProperty.Value));
+                sb.Append(")");
             }
 
             foreach (var apiProperty in _apiProperties)

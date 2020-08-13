@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace FluentRedditSearch.IntegrationTests
@@ -16,6 +17,16 @@ namespace FluentRedditSearch.IntegrationTests
         }
 
         [Theory]
+        [InlineData("ScienceModerator", "AutoModerator")]
+        public void SearchByMultipleAuthors(params string[] authors)
+        {
+            RunSearchTest(
+                criteria => criteria.WithAuthors(authors),
+                should => should.OnlyContain(x => authors.Any(s => x.Author.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
+            );
+        }
+
+        [Theory]
         [InlineData("all")]
         public void SearchByFlairs(string flair)
         {
@@ -24,6 +35,19 @@ namespace FluentRedditSearch.IntegrationTests
                 should => should
                     .OnlyContain(x => !string.IsNullOrEmpty(x.Flair))
                     .And.OnlyContain(x => x.Flair.Contains(flair, StringComparison.InvariantCultureIgnoreCase))
+            );
+        }
+
+        [Theory]
+        [InlineData("music streaming", "video", "discussion")]
+        [InlineData("Trailers", "News")]
+        public void SearchByMultipleFlairs(params string[] flairs)
+        {
+            RunSearchTest(
+                criteria => criteria.WithFlairs(flairs),
+                should => should
+                    .OnlyContain(x => !string.IsNullOrEmpty(x.Flair))
+                    .And.OnlyContain(x => flairs.Any(s => x.Flair.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
             );
         }
 
@@ -40,6 +64,17 @@ namespace FluentRedditSearch.IntegrationTests
         }
 
         [Theory]
+        [InlineData("imgur", "gfycat")]
+        [InlineData("reddit", "youtube")]
+        public void SearchByMultipleSites(params string[] sites)
+        {
+            RunSearchTest(
+                criteria => criteria.WithSites(sites),
+                should => should.OnlyContain(x => sites.Any(s => x.Domain.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
+            );
+        }
+
+        [Theory]
         [InlineData("nfl")]
         [InlineData("games")]
         public void SearchBySubreddit(string subreddit)
@@ -47,6 +82,18 @@ namespace FluentRedditSearch.IntegrationTests
             RunSearchTest(
                 criteria => criteria.WithSubreddits(subreddit),
                 should => should.OnlyContain(x => x.Subreddit.Equals(subreddit, StringComparison.InvariantCultureIgnoreCase))
+            );
+        }
+
+        [Theory]
+        [InlineData("news", "worldnews")]
+        [InlineData("games", "gaming")]
+        [InlineData("music", "movies", "games")]
+        public void SearchByMultipleSubreddits(params string[] subreddits)
+        {
+            RunSearchTest(
+                criteria => criteria.WithSubreddits(subreddits),
+                should => should.OnlyContain(x => subreddits.Any(s => x.Subreddit.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
             );
         }
     }
