@@ -21,7 +21,7 @@ namespace FluentRedditSearch
         {
         }
 
-        public string Build()
+        public string GetQueryString()
         {
             var sb = new StringBuilder($"search.json?q={_searchTerm}");
 

@@ -11,7 +11,7 @@ namespace FluentRedditSearch.Tests
         {
             var expected = "search.json?q=Search+term";
 
-            var queryString = new RedditSearchCriteria("Search term").Build();
+            var queryString = new RedditSearchCriteria("Search term").GetQueryString();
 
             Assert.Equal(expected, queryString);
         }
@@ -27,7 +27,7 @@ namespace FluentRedditSearch.Tests
                 .WithSites("Site1", "Site2")
                 .WithFlairs("Flair1", "Flair2")
                 .WithOrdering(ResultOrdering.Top)
-                .Build();
+                .GetQueryString();
 
             Assert.Equal(expected, queryString);
         }
@@ -47,7 +47,7 @@ namespace FluentRedditSearch.Tests
                 .WithSubreddits("Subreddit1", "Subreddit2")
                 .WithTerm("Some search term")
                 .WithTimeFilter(ResultTimeFilter.Month)
-                .Build();
+                .GetQueryString();
 
             Assert.Equal(expected, queryString);
         }
@@ -62,7 +62,7 @@ namespace FluentRedditSearch.Tests
                 .WithSubreddits("Subreddit")
                 .WithTerm("Search term")
                 .WithoutOver18Results()
-                .Build();
+                .GetQueryString();
 
             Assert.Equal(expected, queryString);
         }

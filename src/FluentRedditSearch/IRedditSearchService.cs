@@ -4,6 +4,6 @@ namespace FluentRedditSearch
 {
     public interface IRedditSearchService
     {
-        Task<string> GetPayloadAsync(string queryString);
+        Task<RedditSearchResult[]> GetResultsAsync(string queryString);
     }
 }

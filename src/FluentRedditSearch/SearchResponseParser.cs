@@ -2,13 +2,16 @@
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
+
+[assembly: InternalsVisibleTo("FluentRedditSearch.Tests")]
 
 namespace FluentRedditSearch
 {
-    public static class SearchResponseParser
+    internal static class SearchResponseParser
     {
-        private static readonly string _redditBaseAddress = @"https://www.reddit.com";
+        private static readonly string RedditBaseAddress = @"https://www.reddit.com";
 
         public static RedditSearchResult[] Parse(string json)
         {
@@ -32,7 +35,7 @@ namespace FluentRedditSearch
                 CreatedAt = UnixTimeStampToDateTime(data.Created),
                 Author = data.Author,
                 Subreddit = data.Subreddit,
-                PostUrl = new Uri(_redditBaseAddress + data.Permalink),
+                PostUrl = new Uri(RedditBaseAddress + data.Permalink),
                 Thumbnail = GetThumbnailFromPreview(data),
                 IsOver18 = data.Over18,
                 IsSelfPost = data.IsSelf,

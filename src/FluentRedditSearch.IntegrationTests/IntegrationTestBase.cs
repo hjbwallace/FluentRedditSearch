@@ -14,7 +14,7 @@ namespace FluentRedditSearch.IntegrationTests
             Action<RedditSearchResult[]> additionalResultsAction = null)
         {
             var criteria = criteriaFunc(new RedditSearchCriteria());
-            var results = _redditSearchService.GetResults(criteria);
+            var results = _redditSearchService.GetResultsAsync(criteria).GetAwaiter().GetResult();
 
             assertAction?.Invoke(results.Should());
 
