@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentRedditSearch", "Fluen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentRedditSearch.Tests", "FluentRedditSearch.Tests\FluentRedditSearch.Tests.csproj", "{06366F0B-F758-44EA-836B-CF506097D6FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentRedditSearch.IntegrationTests", "FluentRedditSearch.IntegrationTests\FluentRedditSearch.IntegrationTests.csproj", "{4A4366E5-8796-4126-9B49-0FF800FA4ACC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentRedditSearch.IntegrationTests", "FluentRedditSearch.IntegrationTests\FluentRedditSearch.IntegrationTests.csproj", "{4A4366E5-8796-4126-9B49-0FF800FA4ACC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22F0CC01-F278-4DE9-9207-D142E5AFC4A0}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

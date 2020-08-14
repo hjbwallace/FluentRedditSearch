@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>FluentRedditSearch</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Harrison Wallace</Authors>
+    <PackageTags>Reddit</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/hjbwallace/FluentRedditSearch</RepositoryUrl>
+    <Description>Search Reddit by creating complex queries with a fluent syntax</Description>
   </PropertyGroup>
 
   <ItemGroup>
