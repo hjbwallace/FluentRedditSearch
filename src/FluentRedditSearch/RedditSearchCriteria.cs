@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentRedditSearch.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,8 @@ namespace FluentRedditSearch
 {
     public class RedditSearchCriteria
     {
-        private readonly IDictionary<string, object> _apiProperties = new Dictionary<string, object>();
-        private readonly IDictionary<string, object[]> _queryProperties = new Dictionary<string, object[]>();
+        private readonly IDictionary<string, string> _apiProperties = new Dictionary<string, string>();
+        private readonly IDictionary<string, string[]> _queryProperties = new Dictionary<string, string[]>();
         private string _searchTerm;
 
         public RedditSearchCriteria(string searchTerm)
@@ -23,21 +24,11 @@ namespace FluentRedditSearch
 
         public string GetQueryString()
         {
-            var sb = new StringBuilder($"search.json?q={_searchTerm}");
+            var sb = new StringBuilder($"search.json?q={_searchTerm} ");
+            sb.Append(QueryStringHelper.GetQueryProperties(_queryProperties));
+            sb.Append(QueryStringHelper.GetApiProperties(_apiProperties));
 
-            foreach (var queryProperty in _queryProperties)
-            {
-                sb.Append(" ");
-                sb.Append(queryProperty.Key + "%3A");
-                sb.Append("(");
-                sb.Append(string.Join(" OR ", queryProperty.Value));
-                sb.Append(")");
-            }
-
-            foreach (var apiProperty in _apiProperties)
-                sb.Append($"&{apiProperty.Key}={apiProperty.Value}");
-
-            return sb.ToString().Replace(' ', '+');
+            return sb.ToString().Trim().Replace(" ", "+");
         }
 
         public RedditSearchCriteria WithAuthors(params string[] authors)

@@ -55,7 +55,7 @@ namespace FluentRedditSearch.Tests
         [Fact]
         public void CanGenerateWithParameters()
         {
-            var expected = "search.json?q=Search+term+subreddit%3A(Subreddit)&limit=25&include_over_18=off";
+            var expected = "search.json?q=Search+term+subreddit%3ASubreddit&limit=25&include_over_18=off";
 
             var queryString = _criteria
                 .WithLimit(25)

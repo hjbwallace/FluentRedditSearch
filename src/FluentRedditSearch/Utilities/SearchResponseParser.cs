@@ -2,12 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Web;
 
-[assembly: InternalsVisibleTo("FluentRedditSearch.Tests")]
-
-namespace FluentRedditSearch
+namespace FluentRedditSearch.Utilities
 {
     internal static class SearchResponseParser
     {

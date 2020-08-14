@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using FluentRedditSearch.Tests.Resources;
+using FluentRedditSearch.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Web;
