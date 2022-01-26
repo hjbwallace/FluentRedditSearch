@@ -5,15 +5,15 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  Publish:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.200
+        dotnet-version: '6.0.x'
 
     - name: Restore
       run: dotnet restore
@@ -23,7 +23,11 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       working-directory: src
 
-    - name: Publish Nuget
+    - name: Test
+      run: dotnet test -restore:False
+      working-directory: src/FluentRedditSearch.Tests
+
+    - name: Publish NuGet
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
           PROJECT_FILE_PATH: src/FluentRedditSearch/FluentRedditSearch.csproj

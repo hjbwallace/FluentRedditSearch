@@ -37,7 +37,7 @@ namespace FluentRedditSearch.Tests
             var expected = new
             {
                 Author = "_NITRISS_",
-                CreatedAt = DateTime.Parse("15/04/2019 2:47:44 PM"),
+                CreatedAt = new DateTime(2019, 04, 15, 06, 47, 44, 0, DateTimeKind.Utc).ToLocalTime(),
                 Domain = "i.imgur.com",
                 Flair = "/r/ALL",
                 Id = "bd8puw",

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29020.237
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentRedditSearch", "FluentRedditSearch\FluentRedditSearch.csproj", "{2E04E38C-78B8-4D5C-8CD0-B11C857D7052}"
 EndProject
@@ -12,7 +12,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22F0CC01-F278-4DE9-9207-D142E5AFC4A0}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
+		..\.github\workflows\workflow.yml = ..\.github\workflows\workflow.yml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5EBB299A-FF7D-42AF-B99E-CED0E326E916}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +36,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{06366F0B-F758-44EA-836B-CF506097D6FD} = {5EBB299A-FF7D-42AF-B99E-CED0E326E916}
+		{4A4366E5-8796-4126-9B49-0FF800FA4ACC} = {5EBB299A-FF7D-42AF-B99E-CED0E326E916}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3B94751-437C-4BF3-B335-31F3DB116012}

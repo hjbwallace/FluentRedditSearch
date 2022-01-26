@@ -7,14 +7,14 @@ namespace FluentRedditSearch.Tests.Resources
 {
     internal static class ExamplePayloads
     {
-        private static IDictionary<string, PayloadContainer> _payloadDictionary;
+        private static IDictionary<string, PayloadContainer> PayloadDictionary;
 
         public static IDictionary<string, PayloadContainer> Get()
         {
-            if (_payloadDictionary == null)
-                _payloadDictionary = GeneratePayloadDictionary();
+            if (PayloadDictionary == null)
+                PayloadDictionary = GeneratePayloadDictionary();
 
-            return _payloadDictionary;
+            return PayloadDictionary;
         }
 
         public static PayloadContainer Get(string key)
@@ -44,7 +44,7 @@ namespace FluentRedditSearch.Tests.Resources
             var fileFormat = $"{type}.json";
 
             return Directory
-                .GetFiles(@"Resources\Payloads\", $"*{fileFormat}")
+                .GetFiles(@"Resources/Payloads/", $"*{fileFormat}")
                 .ToDictionary(
                     key => new FileInfo(key).Name.Replace(fileFormat, ""),
                     value => File.ReadAllText(value));
