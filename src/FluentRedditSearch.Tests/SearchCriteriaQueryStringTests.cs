@@ -4,7 +4,7 @@ namespace FluentRedditSearch.Tests
 {
     public class SearchCriteriaQueryStringTests
     {
-        private readonly RedditSearchCriteria _criteria = new RedditSearchCriteria();
+        private readonly RedditSearchCriteria _criteria = new();
 
         [Fact]
         public void CanGenerate()
@@ -62,6 +62,25 @@ namespace FluentRedditSearch.Tests
                 .WithSubreddits("Subreddit")
                 .WithTerm("Search term")
                 .WithoutOver18Results()
+                .GetQueryString();
+
+            Assert.Equal(expected, queryString);
+        }
+
+        [Fact]
+        public void MostRecentPropertyIsUsedInQueryString()
+        {
+            var expected = "search.json?q=Otherterm+subreddit%3ASubredditNew&limit=5&include_over_18=on";
+
+            var queryString = _criteria
+                .WithLimit(25)
+                .WithLimit(5)
+                .WithSubreddits("Subreddit")
+                .WithSubreddits("SubredditNew")
+                .WithTerm("Search term")
+                .WithTerm("Otherterm")
+                .WithoutOver18Results()
+                .WithOver18Results()
                 .GetQueryString();
 
             Assert.Equal(expected, queryString);

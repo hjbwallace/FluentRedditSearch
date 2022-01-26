@@ -10,6 +10,7 @@ namespace FluentRedditSearch
     {
         private readonly IDictionary<string, string> _apiProperties = new Dictionary<string, string>();
         private readonly IDictionary<string, string[]> _queryProperties = new Dictionary<string, string[]>();
+        private readonly IDictionary<string, string[]> _queryNotProperties = new Dictionary<string, string[]>();
         private string _searchTerm;
 
         public RedditSearchCriteria(string searchTerm)
@@ -25,8 +26,15 @@ namespace FluentRedditSearch
         public string GetQueryString()
         {
             var sb = new StringBuilder($"search.json?q={_searchTerm} ");
-            sb.Append(QueryStringHelper.GetQueryProperties(_queryProperties));
-            sb.Append(QueryStringHelper.GetApiProperties(_apiProperties));
+
+            if (_queryProperties.Any())
+                sb.Append(QueryStringHelper.GetQueryProperties(_queryProperties));
+
+            if (_queryNotProperties.Any())
+                sb.Append(" NOT " + QueryStringHelper.GetQueryProperties(_queryNotProperties));
+
+            if (_apiProperties.Any())
+                sb.Append(QueryStringHelper.GetApiProperties(_apiProperties));
 
             return sb.ToString().Trim().Replace(" ", "+");
         }
@@ -36,10 +44,21 @@ namespace FluentRedditSearch
             WithQueryProperty("author", authors, false);
             return this;
         }
+        public RedditSearchCriteria WithoutAuthors(params string[] authors)
+        {
+            WithoutQueryProperty("author", authors, false);
+            return this;
+        }
 
         public RedditSearchCriteria WithFlairs(params string[] flairs)
         {
             WithQueryProperty("flair", flairs, true);
+            return this;
+        }
+
+        public RedditSearchCriteria WithoutFlairs(params string[] flairs)
+        {
+            WithoutQueryProperty("flair", flairs, true);
             return this;
         }
 
@@ -68,6 +87,11 @@ namespace FluentRedditSearch
         public RedditSearchCriteria WithSubreddits(params string[] subreddits)
         {
             return WithQueryProperty("subreddit", subreddits, false);
+        }
+
+        public RedditSearchCriteria WithoutSubreddits(params string[] subreddits)
+        {
+            return WithoutQueryProperty("subreddit", subreddits, false);
         }
 
         public RedditSearchCriteria WithTerm(string searchTerm)
@@ -113,6 +137,21 @@ namespace FluentRedditSearch
                 throw new ArgumentException("Values cannot contain a space");
 
             _queryProperties[property] = values;
+            return this;
+        }
+
+        private RedditSearchCriteria WithoutQueryProperty(string property, string[] values, bool allowSpaces)
+        {
+            if (values?.Any() != true)
+                throw new ArgumentException("Values must be populated");
+
+            if (values.Any(string.IsNullOrWhiteSpace))
+                throw new ArgumentException("All values must be populated");
+
+            if (!allowSpaces && values.Any(x => x.Contains(" ")))
+                throw new ArgumentException("Values cannot contain a space");
+
+            _queryNotProperties[property] = values;
             return this;
         }
     }
