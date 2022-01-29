@@ -96,5 +96,57 @@ namespace FluentRedditSearch.IntegrationTests
                 should => should.OnlyContain(x => subreddits.Any(s => x.Subreddit.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
             );
         }
+
+        [Fact]
+        public void SearchForSelfPosts()
+        {
+            RunSearchTest(
+                criteria => criteria.WithSelfPosts(),
+                should => should.OnlyContain(x => x.IsSelfPost == true)
+            );
+        }
+
+        [Fact]
+        public void SearchForNonSelfPosts()
+        {
+            RunSearchTest(
+                criteria => criteria.WithoutSelfPosts(),
+                should => should.OnlyContain(x => x.IsSelfPost == false)
+            );
+        }
+
+        [Theory]
+        [InlineData("nfl")]
+        [InlineData("game")]
+        public void SearchByTitle(string title)
+        {
+            RunSearchTest(
+                criteria => criteria.WithTitles(title),
+                should => should.OnlyContain(x => x.Title.Contains(title, StringComparison.InvariantCultureIgnoreCase))
+            );
+        }
+
+        [Theory]
+        [InlineData("nfl")]
+        [InlineData("game")]
+        public void SearchBySelfText(string title)
+        {
+            RunSearchTest(
+                criteria => criteria.WithTitles(title),
+                should => should.OnlyContain(x => x.Title.Contains(title, StringComparison.InvariantCultureIgnoreCase))
+            );
+        }
+
+        [Theory]
+        [InlineData("nfl")]
+        [InlineData("imgur")]
+        [InlineData("gfycat")]
+        public void SearchByUrl(string url)
+        {
+            RunSearchTest(
+                criteria => criteria.WithUrls(url),
+                should => should.OnlyContain(x => x.Url.AbsoluteUri.Contains(url, StringComparison.InvariantCultureIgnoreCase))
+            );
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace FluentRedditSearch
             WithQueryProperty("author", authors, false);
             return this;
         }
+
         public RedditSearchCriteria WithoutAuthors(params string[] authors)
         {
             WithoutQueryProperty("author", authors, false);
@@ -94,6 +95,36 @@ namespace FluentRedditSearch
             return WithoutQueryProperty("subreddit", subreddits, false);
         }
 
+        public RedditSearchCriteria WithUrls(params string[] urls)
+        {
+            return WithQueryProperty("url", urls, false);
+        }
+
+        public RedditSearchCriteria WithoutUrls(params string[] urls)
+        {
+            return WithoutQueryProperty("url", urls, false);
+        }
+
+        public RedditSearchCriteria WithTitles(params string[] title)
+        {
+            return WithQueryProperty("title", title, true);
+        }
+
+        public RedditSearchCriteria WithoutTitles(params string[] titles)
+        {
+            return WithoutQueryProperty("title", titles, true);
+        }
+
+        public RedditSearchCriteria WithSelfText(params string[] text)
+        {
+            return WithQueryProperty("selftext", text, true);
+        }
+
+        public RedditSearchCriteria WithoutSelfText(params string[] text)
+        {
+            return WithoutQueryProperty("selftext", text, true);
+        }
+
         public RedditSearchCriteria WithTerm(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -102,6 +133,10 @@ namespace FluentRedditSearch
             _searchTerm = searchTerm;
             return this;
         }
+
+        public RedditSearchCriteria WithSelfPosts() => WithSelfPosts(true);
+
+        public RedditSearchCriteria WithoutSelfPosts() => WithSelfPosts(false);
 
         public RedditSearchCriteria WithTimeFilter(ResultTimeFilter timeSpan)
         {
@@ -123,6 +158,11 @@ namespace FluentRedditSearch
         private RedditSearchCriteria WithOver18(bool includeOver18)
         {
             return WithApiProperty("include_over_18", includeOver18 ? "on" : "off");
+        }
+
+        private RedditSearchCriteria WithSelfPosts(bool includeSelfPosts)
+        {
+            return WithQueryProperty("self", new[] { includeSelfPosts ? "1" : "0" }, false);
         }
 
         private RedditSearchCriteria WithQueryProperty(string property, string[] values, bool allowSpaces)
