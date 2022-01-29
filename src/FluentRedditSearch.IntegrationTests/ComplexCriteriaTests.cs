@@ -32,6 +32,7 @@ namespace FluentRedditSearch.IntegrationTests
         {
             RunSearchTest(
                 criteria => criteria
+                    .WithTerm("Test")
                     .WithSubreddits("news", "worldnews")
                     .WithLimit(10)
                     .WithOrdering(ResultOrdering.Top)
@@ -54,6 +55,7 @@ namespace FluentRedditSearch.IntegrationTests
 
             RunSearchTest(
                 criteria => criteria
+                    .WithTerm("Test")
                     .WithSites(sites)
                     .WithLimit(10)
                     .WithOrdering(ResultOrdering.Top)

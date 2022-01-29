@@ -21,7 +21,9 @@ namespace FluentRedditSearch.IntegrationTests
         public void SearchByMultipleAuthors(params string[] authors)
         {
             RunSearchTest(
-                criteria => criteria.WithAuthors(authors),
+                criteria => criteria
+                    .WithTerm("Test")
+                    .WithAuthors(authors),
                 should => should.OnlyContain(x => authors.Any(s => x.Author.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
             );
         }
@@ -69,7 +71,9 @@ namespace FluentRedditSearch.IntegrationTests
         public void SearchByMultipleSites(params string[] sites)
         {
             RunSearchTest(
-                criteria => criteria.WithSites(sites),
+                criteria => criteria
+                    .WithTerm("Test")
+                    .WithSites(sites),
                 should => should.OnlyContain(x => sites.Any(s => x.Domain.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
             );
         }
@@ -92,7 +96,9 @@ namespace FluentRedditSearch.IntegrationTests
         public void SearchByMultipleSubreddits(params string[] subreddits)
         {
             RunSearchTest(
-                criteria => criteria.WithSubreddits(subreddits),
+                criteria => criteria
+                    .WithTerm("Test")
+                    .WithSubreddits(subreddits),
                 should => should.OnlyContain(x => subreddits.Any(s => x.Subreddit.Contains(s, StringComparison.InvariantCultureIgnoreCase)))
             );
         }
