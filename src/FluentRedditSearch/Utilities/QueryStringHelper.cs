@@ -8,12 +8,12 @@ namespace FluentRedditSearch.Utilities
     {
         public static string GetQueryProperties(IDictionary<string, string[]> properties)
         {
-            return string.Join("+", properties.Select(GetQueryProperty));
+            return string.Join("+", properties.Where(x => x.Value?.Any() == true).Select(GetQueryProperty));
         }
 
         public static string GetApiProperties(IDictionary<string, string> properties)
         {
-            var valuesString = properties.Select(x => $"&{Encode(x.Key)}={Encode(x.Value)}");
+            var valuesString = properties.Where(x => x.Value != null).Select(x => $"&{Encode(x.Key)}={Encode(x.Value)}");
             return string.Join("", valuesString);
         }
 

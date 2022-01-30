@@ -28,10 +28,10 @@ namespace FluentRedditSearch
         {
             var sb = new StringBuilder($"search.json?q={(_searchTerm == null ? " " : WebUtility.UrlEncode(_searchTerm))} ");
 
-            if (_queryProperties.Any())
+            if (_queryProperties.Any(x => x.Value?.Any() == true))
                 sb.Append(QueryStringHelper.GetQueryProperties(_queryProperties));
 
-            if (_queryNotProperties.Any())
+            if (_queryNotProperties.Any(x => x.Value?.Any() == true))
                 sb.Append(" NOT " + QueryStringHelper.GetQueryProperties(_queryNotProperties));
 
             if (_apiProperties.Any())
@@ -84,6 +84,11 @@ namespace FluentRedditSearch
         public RedditSearchCriteria WithSites(params string[] sites)
         {
             return WithQueryProperty("site", sites, false);
+        }
+
+        public RedditSearchCriteria WithoutSites(params string[] sites)
+        {
+            return WithoutQueryProperty("site", sites, false);
         }
 
         public RedditSearchCriteria WithSubreddits(params string[] subreddits)
@@ -146,13 +151,7 @@ namespace FluentRedditSearch
 
         private RedditSearchCriteria WithApiProperty(string property, object value)
         {
-            if (string.IsNullOrEmpty(property))
-                throw new ArgumentException("Property must be populated");
-
-            if (string.IsNullOrEmpty(value?.ToString()))
-                throw new ArgumentException("Value must be populated");
-
-            _apiProperties[property] = value.ToString();
+            _apiProperties[property] = FormatString(value.ToString());
             return this;
         }
 
@@ -168,31 +167,23 @@ namespace FluentRedditSearch
 
         private RedditSearchCriteria WithQueryProperty(string property, string[] values, bool allowSpaces)
         {
-            if (values?.Any() != true)
-                throw new ArgumentException("Values must be populated");
+            var formattedValues = values.Select(FormatString).Where(x => x != null).Distinct().ToArray();
 
-            if (values.Any(string.IsNullOrWhiteSpace))
-                throw new ArgumentException("All values must be populated");
+            if (!allowSpaces && formattedValues.Any(x => x.Contains(" ")))
+                throw new ArgumentException("No values can contain a space");
 
-            if (!allowSpaces && values.Any(x => x.Contains(" ")))
-                throw new ArgumentException("Values cannot contain a space");
-
-            _queryProperties[property] = values.Select(FormatString).Where(x => x != null).ToArray();
+            _queryProperties[property] = formattedValues;
             return this;
         }
 
         private RedditSearchCriteria WithoutQueryProperty(string property, string[] values, bool allowSpaces)
         {
-            if (values?.Any() != true)
-                throw new ArgumentException("Values must be populated");
+            var formattedValues = values.Select(FormatString).Where(x => x != null).Distinct().ToArray();
 
-            if (values.Any(string.IsNullOrWhiteSpace))
-                throw new ArgumentException("All values must be populated");
+            if (!allowSpaces && formattedValues.Any(x => x.Contains(" ")))
+                throw new ArgumentException("No values can contain a space");
 
-            if (!allowSpaces && values.Any(x => x.Contains(" ")))
-                throw new ArgumentException("Values cannot contain a space");
-
-            _queryNotProperties[property] = values.Select(FormatString).Where(x => x != null).ToArray();
+            _queryNotProperties[property] = formattedValues;
             return this;
         }
 
