@@ -7,9 +7,19 @@ namespace FluentRedditSearch.Tests
         private readonly RedditSearchCriteria _criteria = new();
 
         [Fact]
-        public void CanGenerate()
+        public void CanGenerateWithSingleWordTerm()
         {
-            var expected = "search.json?q=Search+term";
+            var expected = "search.json?q=SearchTerm";
+
+            var queryString = new RedditSearchCriteria("SearchTerm").GetQueryString();
+
+            Assert.Equal(expected, queryString);
+        }
+
+        [Fact]
+        public void CanGenerateWithMultiWordTerm()
+        {
+            var expected = "search.json?q=%22Search+term%22";
 
             var queryString = new RedditSearchCriteria("Search term").GetQueryString();
 
@@ -19,7 +29,7 @@ namespace FluentRedditSearch.Tests
         [Fact]
         public void CanGenerateForWithMultipleSitesAndFlairs()
         {
-            var expected = "search.json?q=Search+term+site%3A(Site1+OR+Site2)+flair%3A(Flair1+OR+Flair2)&limit=99&sort=top";
+            var expected = "search.json?q=%22Search+term%22+site%3A(Site1+OR+Site2)+flair%3A(Flair1+OR+Flair2)&limit=99&sort=top";
 
             var queryString = _criteria
                 .WithLimit(99)
@@ -35,7 +45,7 @@ namespace FluentRedditSearch.Tests
         [Fact]
         public void CanGenerateWithAllParameters()
         {
-            var expected = "search.json?q=Some+search+term+author%3A(Author1+OR+Author2)+flair%3A(Flair1+OR+Flair2)+site%3A(Site1+OR+Site2)+subreddit%3A(Subreddit1+OR+Subreddit2)&limit=99&sort=comments&include_over_18=on&t=month";
+            var expected = "search.json?q=%22Some+search+term%22+author%3A(Author1+OR+Author2)+flair%3A(Flair1+OR+Flair2)+site%3A(Site1+OR+Site2)+subreddit%3A(Subreddit1+OR+Subreddit2)&limit=99&sort=comments&include_over_18=on&t=month";
 
             var queryString = _criteria
                 .WithAuthors("Author1", "Author2")
@@ -55,7 +65,7 @@ namespace FluentRedditSearch.Tests
         [Fact]
         public void CanGenerateWithParameters()
         {
-            var expected = "search.json?q=Search+term+subreddit%3ASubreddit&limit=25&include_over_18=off";
+            var expected = "search.json?q=%22Search+term%22+subreddit%3ASubreddit&limit=25&include_over_18=off";
 
             var queryString = _criteria
                 .WithLimit(25)

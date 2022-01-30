@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace FluentRedditSearch
@@ -25,7 +26,7 @@ namespace FluentRedditSearch
 
         public string GetQueryString()
         {
-            var sb = new StringBuilder($"search.json?q={_searchTerm} ");
+            var sb = new StringBuilder($"search.json?q={(_searchTerm == null ? " " : WebUtility.UrlEncode(_searchTerm))} ");
 
             if (_queryProperties.Any())
                 sb.Append(QueryStringHelper.GetQueryProperties(_queryProperties));
@@ -130,7 +131,7 @@ namespace FluentRedditSearch
             if (string.IsNullOrWhiteSpace(searchTerm))
                 throw new ArgumentException("Search term must be populated");
 
-            _searchTerm = searchTerm;
+            _searchTerm = FormatString(searchTerm);
             return this;
         }
 
@@ -176,7 +177,7 @@ namespace FluentRedditSearch
             if (!allowSpaces && values.Any(x => x.Contains(" ")))
                 throw new ArgumentException("Values cannot contain a space");
 
-            _queryProperties[property] = values;
+            _queryProperties[property] = values.Select(FormatString).Where(x => x != null).ToArray();
             return this;
         }
 
@@ -191,8 +192,20 @@ namespace FluentRedditSearch
             if (!allowSpaces && values.Any(x => x.Contains(" ")))
                 throw new ArgumentException("Values cannot contain a space");
 
-            _queryNotProperties[property] = values;
+            _queryNotProperties[property] = values.Select(FormatString).Where(x => x != null).ToArray();
             return this;
+        }
+
+        private static string FormatString(string source)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+                return null;
+
+            var formatted = source.Trim();
+
+            return formatted.Contains(" ")
+                ? $"\"{formatted}\""
+                : formatted;
         }
     }
 }
