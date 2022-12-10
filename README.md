@@ -50,7 +50,7 @@ Note: Allowing spaces is consistent when including or excluding properties from 
 
 ```c#
 new RedditSearchCriteria()
-	.WithTerm("denver")
+    .WithTerm("denver")
     .WithSubreddits("nfl")
     .WithLimit(10)
     .WithOrdering(ResultOrdering.Top)
@@ -88,9 +88,9 @@ The `RedditSearchService` can be used to quickly get search results by providing
 
 ```c#
 var criteria = new RedditSearchCriteria()
-	.WithTerm("Some search term")
-	.WithLimit(100);
-	
+    .WithTerm("Some search term")
+    .WithLimit(100);
+
 var service = new RedditSearchService();
 var results = await service.GetResultsAsync(criteria);
 ```
@@ -101,7 +101,7 @@ var results = await service.GetResultsAsync(criteria);
 var results = await new RedditSearchService()
     .GetResultsAsync(criteria => criteria
         .WithTerm("Some search term")
-	    .WithLimit(100));
+        .WithLimit(100));
 ```
 
 > Search Reddit using a manual query string
